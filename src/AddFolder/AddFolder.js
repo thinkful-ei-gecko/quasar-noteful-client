@@ -1,6 +1,7 @@
-import React, { Component } from 'react'
+import React from 'react'
 import config from '../config'
 import ApiContext from '../ApiContext'
+import './AddFolder.css';
 
 export default class AddFolder extends React.Component {
     
@@ -10,7 +11,6 @@ export default class AddFolder extends React.Component {
     
     setFolder(value) {
         this.setState({folder: {value: value, touched: true}});
-
     }
 
     formSubmit(e) {
@@ -27,32 +27,51 @@ export default class AddFolder extends React.Component {
           })
         })
           .then(res => {
+            if (!res.ok) {
+              throw new Error(res.statusText);
+            }
+            this.setState({folder: {value: ''}});
             return res.json()
           })
           .then((data) => {
             console.log(data)
             this.context.addFolder(data)
-            //console.log(this.context.addFolder(data));
           })
           .catch(error => {
-            console.error({ error })
+            console.log({ error })
           })
     }
     
 
-    validateFolderName(folderName) {
-   
+    validateFolderName() {
+      let folderName = this.state.folder.value;
+      let name = folderName.trim();
+      if (name.length === 0) {
+        return 'Folder name has to be more than 0 characters long';
+      }
+      if (name.length < 2) {
+        return 'Folder name has to be at least 2 characters long';
+      }
     }
 
     render() {
        //console.log(this.context);
 
         return (
-            <form onSubmit={e => this.formSubmit(e)}>
+            <form 
+            onSubmit={e => this.formSubmit(e)}
+            className="addFolderForm">
                 <label htmlFor="folderName">Folder Name</label>
-                <input value={this.state.folder.value} onChange={e => this.setFolder(e.target.value)} type="text" id="folderName"></input>
-                {this.validateFolderName }
-                <input type="submit" value="sumbit"></input>
+                <input 
+                  value={this.state.folder.value} 
+                  onChange={e => this.setFolder(e.target.value)} 
+                  type="text" 
+                  id="folderName"></input>
+                {this.state.folder.touched === true && <p>{this.validateFolderName()}</p> }
+                <input 
+                  type="submit" 
+                  disabled={this.validateFolderName()}
+                  value="submit"></input>
             </form>
         )
     }

@@ -1,11 +1,13 @@
-import React, {Component} from 'react';
-import {Route, Link} from 'react-router-dom';
-import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
+import React, { Component } from 'react';
+import { Route, Link } from 'react-router-dom';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import AddFolder from '../AddFolder/AddFolder';
+import AddNote from '../AddNote/AddNote';
 import NoteListNav from '../NoteListNav/NoteListNav';
 import NotePageNav from '../NotePageNav/NotePageNav';
 import NoteListMain from '../NoteListMain/NoteListMain';
 import NotePageMain from '../NotePageMain/NotePageMain';
+import NotefulError from '../NotefulError';
 import ApiContext from '../ApiContext';
 import config from '../config';
 import './App.css';
@@ -14,16 +16,15 @@ class App extends Component {
 
     constructor(props) {
         super(props)
-    
+
         this.state = {
             notes: [],
             folders: [],
-            addFolder:  this.addFolder
         };
-        
-        this.addFolder = this.addFolder.bind(this);
-    }
 
+        // this.addFolder = this.addFolder.bind(this);
+        // this.addNote = this.addNote.bind(this);
+    }
 
     componentDidMount() {
         Promise.all([
@@ -39,21 +40,24 @@ class App extends Component {
                 return Promise.all([notesRes.json(), foldersRes.json()]);
             })
             .then(([notes, folders]) => {
-                this.setState({notes, folders});
+                this.setState({ notes, folders });
             })
             .catch(error => {
-                console.error({error});
+                console.error({ error });
             });
     }
 
-
-    addFolder(data) {
-       let newFolders = [...this.state.folders, data]; 
-       this.setState({
+    addFolder = (data) => {
+        let newFolders = [...this.state.folders, data];
+        this.setState({
             folders: newFolders
-       }) 
+        })
     }
 
+    addNote = (note) => {
+        let newNotes = [...this.state.notes, note];
+        this.setState({ notes: newNotes });
+    }
 
     handleDeleteNote = noteId => {
         this.setState({
@@ -91,7 +95,19 @@ class App extends Component {
                     />
                 ))}
                 <Route path="/note/:noteId" component={NotePageMain} />
-                <Route path="/add-folder" component={AddFolder} />
+
+                <Route path="/add-folder" render={() => (
+                    <NotefulError>
+                        <AddFolder />
+                    </NotefulError>)}
+                />
+
+                <Route path="/add-note" render={() => (
+                    <NotefulError>
+                        <AddNote />
+                    </NotefulError>)}
+                />
+
             </>
         );
     }
@@ -100,8 +116,9 @@ class App extends Component {
         const value = {
             notes: this.state.notes,
             folders: this.state.folders,
-            //deleteNote: this.handleDeleteNote,
-            addFolder: this.addFolder
+            deleteNote: this.handleDeleteNote,
+            addFolder: this.addFolder,
+            addNote: this.addNote
         };
         return (
             <ApiContext.Provider value={value}>
