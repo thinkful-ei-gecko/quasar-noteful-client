@@ -20,11 +20,9 @@ class App extends Component {
             folders: [],
             addFolder:  this.addFolder
         };
-
+        
         this.addFolder = this.addFolder.bind(this);
     }
-    
-
 
 
     componentDidMount() {
@@ -102,7 +100,7 @@ class App extends Component {
         const value = {
             notes: this.state.notes,
             folders: this.state.folders,
-            deleteNote: this.handleDeleteNote,
+            //deleteNote: this.handleDeleteNote,
             addFolder: this.addFolder
         };
         return (
