@@ -11,11 +11,21 @@ import config from '../config';
 import './App.css';
 
 class App extends Component {
-    state = {
-        notes: [],
-        folders: [],
-        addFolder:  this.addFolder
-    };
+
+    constructor(props) {
+        super(props)
+    
+        this.state = {
+            notes: [],
+            folders: [],
+            addFolder:  this.addFolder
+        };
+
+        this.addFolder = this.addFolder.bind(this);
+    }
+    
+
+
 
     componentDidMount() {
         Promise.all([

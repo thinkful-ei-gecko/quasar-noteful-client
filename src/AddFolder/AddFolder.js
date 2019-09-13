@@ -27,13 +27,12 @@ export default class AddFolder extends React.Component {
           })
         })
           .then(res => {
-            if (!res.ok)
-              return res.json().then(e => Promise.reject(e))
             return res.json()
           })
           .then((data) => {
-            //this.context.addFolder(data)
-            console.log(this.context.addFolder(data));
+            console.log(data)
+            this.context.addFolder(data)
+            //console.log(this.context.addFolder(data));
           })
           .catch(error => {
             console.error({ error })
@@ -46,7 +45,7 @@ export default class AddFolder extends React.Component {
     }
 
     render() {
-        console.log(this.context);
+       //console.log(this.context);
 
         return (
             <form onSubmit={e => this.formSubmit(e)}>
