@@ -126,7 +126,6 @@ class App extends Component {
                 <div className="App">
                     <nav className="App__nav">{this.renderNavRoutes()}</nav>
                     <header className="App__header">
-                        <Note ></Note>
                         <h1>
                             <Link to="/">Noteful</Link>{' '}
                             <FontAwesomeIcon icon="check-double" />
