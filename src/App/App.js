@@ -11,7 +11,7 @@ import NotefulError from '../NotefulError';
 import ApiContext from '../ApiContext';
 import config from '../config';
 import './App.css';
-import Note from '../Note/Note';
+import PropTypes from 'prop-types';
 
 class App extends Component {
 
@@ -139,3 +139,13 @@ class App extends Component {
 }
 
 export default App;
+
+ApiContext.Provider.propTypes = {
+    value: PropTypes.shape({
+        notes: PropTypes.array.isRequired,
+        folders: PropTypes.array.isRequired,
+        addFolder: PropTypes.func.isRequired,
+        addNote: PropTypes.func.isRequired,
+        deleteNote: PropTypes.func.isRequired,
+    }).isRequired,
+};
