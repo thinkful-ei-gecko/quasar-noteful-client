@@ -16,7 +16,7 @@ class Note extends React.Component {
       value: '',
       touched: false
     },
-    folderId: {
+    folder_id: {
       value: undefined,
       touched: false
     }
@@ -31,7 +31,7 @@ class Note extends React.Component {
   }
 
   setFolderId(e) {
-    this.setState({ folderId: { value: e.target.value, touched: true } });
+    this.setState({ folder_id: { value: e.target.value, touched: true } });
   }
 
   validateName() {
@@ -45,7 +45,7 @@ class Note extends React.Component {
   }
 
   validateFolder() {
-    if (!this.state.folderId.value) {
+    if (!this.state.folder_id.value) {
       return 1
     }
   }
@@ -60,7 +60,7 @@ class Note extends React.Component {
     const newNoteObj = {
       name: this.state.name.value,
       content: this.state.content.value,
-      folderId: this.state.folderId.value,
+      folder_id: this.state.folder_id.value,
       modified: time.toISOString()
     }
 
@@ -109,7 +109,7 @@ class Note extends React.Component {
           maxLength={180}/>
 
         <select
-          value={this.state.folderId.value}
+          value={this.state.folder_id.value}
           onChange={e => this.setFolderId(e)}>
           <option value=''>Select a Folder</option>
 
